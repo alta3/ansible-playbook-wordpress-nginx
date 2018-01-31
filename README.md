@@ -5,10 +5,41 @@ Ansible playbook and roles for installing WordPress + Nginx + PHP + Postfix serv
 - Ansible 2.0.0 or newer
 - Ubuntu 16.04 (installed on your web server or virtual machine)
 
+0. You have properly booted a new server on the OpenStack cloud, which means you need to gather some information.
+    * Write down the IP address of your server you just booted
+    * Your ~/.ssh/id_rsa.pub key is trusted by your new server
+    * Your user is ubuntu, which is a passwdless sudoer, but when you check visudo, the `user=ubuntu` is NOT there. however you notice that there is an include directory: `/etc/sudoers.d` at the bottom of the file
+    * You check `/etc/sudoers.d` and you notice that there is a file called `90-cloud-init-users`.
+    * You open `/etc/sudoers.d/90-cloud-init-users`
+    * OK, so it looks like the "ansible-boxes" are checked, an RSA key is in place and ubuntu is a passwdless sudoer. You also have the IP address of your new server!
+
 ### Instructions:
 
-### 1. Configure your web server for ssh
+0. Edit /etc/hosts file, and add a new host line like the one below EXCEPT replace `10.0.0.65 with the ip address of your new server. When your are finished, your new server will look like the /etc/hosts file below with the critical exception that the IP address will be your server, not `10.0.0.65`
 
+    `student@beachhead:~$` `sudo vim /etc/hosts`
+
+    `10.0.0.65 alta3.local`  
+    
+    ```
+    127.0.0.1 beachhead localhost
+    172.16.1.4 beachhead
+    172.16.1.5 controller
+    172.16.1.6 compute1
+    172.16.1.7 compute2
+    172.16.1.5 block1
+    172.16.1.5 object1
+    10.0.0.65 alta3.local
+
+    # The following lines are desirable for IPv6 capable hosts
+    ::1 ip6-localhost ip6-loopback
+    fe00::0 ip6-localnet
+    ff00::0 ip6-mcastprefix
+    ff02::1 ip6-allnodes
+    ff02::2 ip6-allrouters
+    ff02::3 ip6-allhosts
+    ```
+    
 Allow connections from your development machine to the web server over ssh. This is essential for ansible to work, so make sure to configure your remote or local server to allow connections via ssh. You may find `ssh-copy-id` helpful. 
 
 You can skip the step below if you're not using vagrant and replace `192.168.100.10` with your websever's IP address, but make sure you're able to SSH into your web server before continuing.
