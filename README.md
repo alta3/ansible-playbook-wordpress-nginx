@@ -39,42 +39,62 @@ Ansible playbook and roles for installing WordPress + Nginx + PHP + Postfix serv
     ff02::2 ip6-allrouters
     ff02::3 ip6-allhosts
     ```
-    
+0. Ping alta3.local and you must be back a positive response.
 
-o. Clone the repository
+    `student@beachhead:~$`` ping alta3.local`
+    
+    ```
+    PING alta3.local (10.0.0.65) 56(84) bytes of data.
+    64 bytes from alta3.local (10.0.0.65): icmp_seq=1 ttl=62 time=2.25 ms
+    64 bytes from alta3.local (10.0.0.65): icmp_seq=2 ttl=62 time=0.650 ms
+    64 bytes from alta3.local (10.0.0.65): icmp_seq=3 ttl=62 time=0.676 ms
+    64 bytes from alta3.local (10.0.0.65): icmp_seq=4 ttl=62 time=0.640 ms
+    ```
+
+0. Clone the repository
+
+    `student@beachhead:~$` `git clone https://github.com/alta3/ansible-playbook-wordpress-nginx.git`
+    
+0. cd into the new directory
+
+    `student@beachhead:~$` `cd ansible-playbook-wordpress-nginx/`
+
+0. Edit the hosts file to point to alta3.local's IP address. An example of your hosts file is below, so just REAPLACE `10.0.0.65` with the IP address of your cloud host. 
+
+    `student@beachhead:~/ansible-playbook-wordpress-nginx$` `vim hosts`  
 
     ```
-$ git clone https://github.com/tucsonlabs/ansible-wordpress-nginx-playbook.git
-$ cd /wordpress-nginx
-```
+    [webservers]
+    alta3.local  ansible_host=10.0.0.65 ansible_ssh_user=ubuntu
+    ```
 
-### 3. Set the web server IP address
+ 0. Let's run the playbook
 
-Create a hosts file to set your web server's IP or move `hosts.example` to `hosts` if you're using vagrant:
+    `student@beachhead:~/ansible-playbook-wordpress-nginx$` `ansible-playbook playbook.yml -i hosts`  
+    
 
-```
-mv hosts.example hosts
-```
+ 0. Let's test our web page!  Open a browser to:
+ 
+    `http://alta3.local`
+    
+ 0. You should be looking at a wordpress config page after being automatically redirected to `http://alta3.local/wp-admin/install.php`
+ 
+ 0. Totally up to you, but if you got this far, let's configure your new web site.
+ 
+     `Select ENGISH` and continue
+     
+ 0. Set up credentuals    
+ 
+     ```
+     Site Title:  alta3 	
+     Username:    ubuntu 	
+     Password:    alta3 
+     Confirm use of weak password:    check
+     Your Email::  your spam email or whatever 	
+     Search Engine Visibility: check
+     ```
+     
+     
 
-Change `192.168.100.10` to your server's URL or the IP address of your virtual machine:
-
-```
-[web-server]
-192.168.100.10
-```
-
-### 4. Run the playbook
-
-```
-$ ansible-playbook playbook.yml -i hosts -u YOUR_REMOTE_USER_ID -K
-```
-
-This tells ansible to use the inventory file we've called "hosts". If you're using vagrant you can run the same command as above but exclude the username and sudo prompt:
-
-```
-$ ansible-playbook playbook.yml -i hosts
-```
-
-### 5. Finish the install
-
-Open your web browser and navigate to [http://192.168.100.10](http://192.168.100.10) (or your webserver's IP) to finish the WordPress installation.
+ 
+ 
