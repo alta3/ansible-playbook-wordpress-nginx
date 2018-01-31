@@ -8,7 +8,7 @@ mysql_root_password: root
 
 auto_up_disable: true
 
-server_hostname: tucsonlabs.dev
+server_hostname: alta3.local
 
 # WordPress Version
 wp_version: 4.7.5
