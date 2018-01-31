@@ -1,0 +1,2 @@
+[webservers]
+alta3.local  ansible_host=10.0.0.65 ansible_ssh_user=ubuntu
